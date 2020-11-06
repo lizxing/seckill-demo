@@ -1,0 +1,64 @@
+spring:
+  profiles:
+    active: dev
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    # log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+---
+spring:
+  profiles: dev
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/seckill-demo?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: 123456
+
+  rabbitmq:
+    # 发送回调
+    publisher-returns: true
+    # 发送确认
+    publisher-confirm-type: correlated
+    # 手动确认消费
+    listener:
+      simple:
+        acknowledge-mode: manual
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    exchange:
+      order: exchange.direct.order
+      pay: exchange.direct.pay
+      deadLetter: exchange.direct.deadLetter
+    queue:
+      order: queue.order
+      pay: queue.pay
+      deadLetter: queue.deadLetter
+    routingKey:
+      order: order
+      pay: pay
+    # ttl过期时间 毫秒
+    ttl: 60000
+
+  redis:
+    # Redis数据库索引（默认为0）
+    database: 1
+    host: localhost
+    port: 6379
+    password:
+    redisson:
+      address: redis://127.0.0.1:6379
+
+
+
+---
+spring:
+  profiles: test
+
+
